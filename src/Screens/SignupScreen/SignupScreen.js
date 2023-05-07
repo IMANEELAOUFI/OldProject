@@ -13,6 +13,7 @@ const [username, setUsername] = useState('');
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [passwordRepeat, setPasswordRepeat] = useState('');
+const [ phoneNumber, setPhoneNumber] = useState('');
 
 const navigation = useNavigation();
     
@@ -33,7 +34,7 @@ const navigation = useNavigation();
     };
 
     return (
-        <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.fot}>
         <View style={styles.root}>
             <Text style={styles.title}>
@@ -70,6 +71,24 @@ const navigation = useNavigation();
              
              <TextInput 
                     placeholder="Your email"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    
+                />
+              
+      
+            </View>
+
+            <Text style={styles.text_footer}>Phone number</Text>
+            <View style={styles.action}>
+
+            <Feather name="phone" 
+            color="#05375a" 
+            size={20} 
+            />
+             
+             <TextInput 
+                    placeholder="Your phone number"
                     style={styles.textInput}
                     autoCapitalize="none"
                     
@@ -130,7 +149,7 @@ const navigation = useNavigation();
              />
         </Animatable.View>
         </View>
-        </ScrollView>
+    </ScrollView>
     );
 };
 

@@ -48,7 +48,7 @@ const SettingAdminScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#f6f6f6'}}>
-           <ScrollView contentContainerStyle={styles.con}> 
+           <ScrollView contentContainerStyle={styles.con} showsVerticalScrollIndicator={false}> 
             <View style={styles.header}>
              <Text style={styles.tir}>Settings</Text> 
             </View>
