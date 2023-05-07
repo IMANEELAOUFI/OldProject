@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         backgroundColor:  "#1A237E",
     },
     container_SECONDARY: {
-        borderColor: "#3B71F3",
+        borderColor: "#1A237E",
         borderWidth: 2,
 
     },

@@ -90,13 +90,13 @@ const styles = StyleSheet.create({
 
     fot: {
         flex: 1,
-        backgroundColor: "#1A237E", 
+        backgroundColor: "#ADD8E6", 
     },
     root: {
         flex: 2,
         alignItems: 'center',
         padding: 20,
-        backgroundColor: "#1A237E",
+        backgroundColor: "#ADD8E6",
         justifyContent: 'center',
     
     },
