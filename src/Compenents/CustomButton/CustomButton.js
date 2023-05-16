@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
     },
 
     container_PRIMARY: {
-        backgroundColor:  "#1A237E",
+        backgroundColor:  "#0000ff",
     },
     container_SECONDARY: {
-        borderColor: "#1A237E",
+        borderColor: "#0000ff",
         borderWidth: 2,
 
     },

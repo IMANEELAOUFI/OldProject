@@ -1,101 +1,139 @@
-import React, {useState} from 'react'
-import {View, Text, TextInput, StyleSheet, ScrollView,  Platform} from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 import CustomButton from '../../Compenents/CustomButton/CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 
+const SignupScreen = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [passwordRepeatError, setPasswordRepeatError] = useState(false);
 
-const SignupScreen = () => { 
-const [username, setUsername] = useState('');
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [passwordRepeat, setPasswordRepeat] = useState('');
-const [ phoneNumber, setPhoneNumber] = useState('');
+  const navigation = useNavigation();
 
-const navigation = useNavigation();
-    
-
-    const onRegisterPressed = () => {
-       navigation.navigate('confirm email');
+  const validateEmail = email => {
+    const regex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    return regex.test(email);
     };
     
-    const onSignInPressed = () => {
-        navigation.navigate('Sign in');
+    const validatePassword = password => {
+    return password.length >= 6;
     };
 
-    const onTermsUsePressed = () => {
-        console.warn('onTermsUsePressed');
-    };
-    const onPrivacyPressed = () => {
-        console.warn('oonPrivacyPressed');
-    };
+    const validatePasswordRepeat = passwordRepeat => {
+        return  passwordRepeat === password;
+        };
 
-    return (
+  const validatePhoneNumber = (phoneNumber) => {
+    const phoneNumberRegex = /^\d{10,14}$/;
+    return phoneNumberRegex.test(phoneNumber);
+  };
+  
+
+  const onRegisterPressed = () => {
+
+    const errors = {};
+  
+  if (!validateEmail(email)) {
+    errors.email = 'Invalid email address';
+  }
+  
+  if (!validatePassword(password)) {
+    errors.password = ' Password must contain at least 6 characters';
+  }
+  
+  if (!validatePhoneNumber(phoneNumber)) {
+    errors.phoneNumber = 'Invalid phone number';
+  }
+  
+  if (!validatePasswordRepeat(passwordRepeat)) {
+    errors.passwordRepeat = 'Passwords do not match';
+  }
+  
+  if (Object.keys(errors).length > 0) {
+    setEmailError(errors.email || false);
+    setPasswordError(errors.password || false);
+    setPhoneNumberError(errors.phoneNumber || false);
+    setPasswordRepeatError(errors.passwordRepeat || false);
+    return;
+  }
+  
+    navigation.navigate('confirm email');
+  };
+
+  const onSignInPressed = () => {
+    navigation.navigate('Sign in');
+  };
+
+  const onTermsUsePressed = () => {
+    console.warn('onTermsUsePressed');
+  };
+
+  const onPrivacyPressed = () => {
+    console.warn('oonPrivacyPressed');
+  };
+
+  return (
     <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.fot}>
+      <View style={styles.fot}>
         <View style={styles.root}>
-            <Text style={styles.title}>
-               Create an account 
-            </Text>
+          <Text style={styles.title}>Create an account</Text>
         </View>
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
-        <Text style={styles.text_footer}>Username</Text>
-            <View style={styles.action}>
+          <Text style={styles.text_footer}>Username</Text>
+          <View style={styles.action}>
+            <FontAwesome name="user-o" size={20} color="#05375a" />
 
-            <FontAwesome 
-            name="user-o" 
-            size={20} 
-            color="#05375a" 
+            <TextInput
+              placeholder="username"
+              style={styles.textInput}
+              autoCapitalize="none"
+              value={username}
+              onChangeText={text => setUsername(text)}
             />
-             
-             <TextInput 
-                    placeholder="username"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    
-                />
-              
-      
-            </View>
+          </View>
 
-            <Text style={styles.text_footer}>Email</Text>
-            <View style={styles.action}>
+          <Text style={styles.text_footer}>Email</Text>
+          <View style={styles.action}>
+            <Entypo name="email" color="#05375a" size={20} />
 
-            <Entypo name="email" 
-            color="#05375a" 
-            size={20} 
+            <TextInput
+              placeholder="Your email"
+              style={styles.textInput}
+              autoCapitalize="none"
+              value={email}
+              onChangeText={text => setEmail(text)}
             />
-             
-             <TextInput 
-                    placeholder="Your email"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    
-                />
-              
-      
-            </View>
+          </View>
+          {emailError && (
+        <Text style={styles.errorMsg}>Invalide email address</Text>
+          )}
 
-            <Text style={styles.text_footer}>Phone number</Text>
-            <View style={styles.action}>
+          <Text style={styles.text_footer}>Phone number</Text>
+          <View style={styles.action}>
+            <Feather name="phone" color="#05375a" size={20} />
 
-            <Feather name="phone" 
-            color="#05375a" 
-            size={20} 
+            <TextInput
+              placeholder="Your phone number"
+              style={styles.textInput}
+              autoCapitalize="none"
+              value={phoneNumber}
+              onChangeText={text => setPhoneNumber(text)}
             />
-             
-             <TextInput 
-                    placeholder="Your phone number"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    
-                />
-              
-      
-            </View>
+          </View>
+          {phoneNumberError && (
+        <Text style={styles.errorMsg}>Invalide phone number</Text> 
+          )}
 
             <Text style={styles.text_footer}>Password</Text>
         <View style={styles.action}>
@@ -109,12 +147,16 @@ const navigation = useNavigation();
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
-                    
+                    value={password}
+                    onChangeText={text => setPassword(text)}
                 />
               
         </View>
+        {passwordError && (
+        <Text style={styles.errorMsg}>Password must contain at least 6 characters</Text>
+        )}
 
-        <Text style={styles.text_footer}>Confirm password </Text>
+        <Text style={styles.text_footer}>Confirm password</Text>
         <View style={styles.action}>
             <Feather 
                     name="lock"
@@ -126,10 +168,15 @@ const navigation = useNavigation();
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
+                    value={passwordRepeat}
+                    onChangeText={text => setPasswordRepeat(text)}
                     
                 />
               
         </View>
+        {passwordRepeatError && (
+        <Text style={styles.errorMsg}> Passwords do not match </Text>
+        )}
 
              <CustomButton 
               text="Register " 

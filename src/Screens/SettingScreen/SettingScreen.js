@@ -18,7 +18,6 @@ const SECTIONS =[
 {
     header: 'Account',
     items: [
-        { id: 'Delete account', icon:'trash-2', label:'Delete account', type: 'select'},
         { id: 'Modify personal information', icon:'edit', label:'Modify personal information', type: 'select'},
     ],
 },
