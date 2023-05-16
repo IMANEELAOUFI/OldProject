@@ -8,12 +8,23 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 
 const ForgotPasswordScreen = () => { 
-const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState(false);
 
 const navigation = useNavigation();
-    
+
+const validateEmail = email => {
+    const regex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    return regex.test(email);
+    };
 
     const onSendPressed = () => {
+        if (!validateEmail(email)) {
+            setEmailError(true);
+            return;
+            } else {
+            setEmailError(false);
+            }
         navigation.navigate('New password');
     };
     
@@ -43,12 +54,16 @@ const navigation = useNavigation();
                     placeholder="Your email"
                     style={styles.textInput}
                     autoCapitalize="none"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
                     
                 />
               
       
             </View>
-            
+            {emailError && (
+        <Text style={styles.errorMsg}>Enter a valid email address</Text>
+      )}
              
 
              <CustomButton  

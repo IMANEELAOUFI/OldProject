@@ -21,7 +21,7 @@ function App(): JSX.Element {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#1A237E",
+    backgroundColor: "#ADD8E6",
     justifyContent: 'center',
     
   },

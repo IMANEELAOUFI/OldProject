@@ -5,23 +5,32 @@ import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-
 const ConfirmEmailScreen = () => { 
-const [username, setUsername] = useState('');
 const [code, setCode] = useState('');
-
+const [codeError, setCodeError] = useState(false);
     
 const navigation = useNavigation();
 
-    const onConfirmPressed = () => {
-        navigation.navigate('Home');
-    };
     
-    const onSignInPressed = () => {
+    const validateCode = code => {
+    return code.length == 4;
+    };
+
+    const onConfirmPressed = () => {
+
+        const errors = {};
+  
+          if (!validateCode(code)) {
+            errors.code = ' Code must contain just 4 characters';
+          }
+          if (Object.keys(errors).length > 0) {
+            setCodeError(errors.code || false);
+            return;
+          }
+
         navigation.navigate('Sign in');
     };
-
-
+    
     const onResendPressed = () => {
         console.warn('onResendPressed');
     };
@@ -35,25 +44,7 @@ const navigation = useNavigation();
             </Text>
         </View>
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
-        <Text style={styles.text_footer}>Username</Text>
-            <View style={styles.action}>
-
-            <FontAwesome 
-            name="user-o" 
-            size={20} 
-            color="#05375a" 
-            />
-             
-             <TextInput 
-                    placeholder="username"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    
-                />
-              
-      
-            </View>
-            
+       
             <Text style={styles.text_footer}>Code</Text>
             <View style={styles.action}>
 
@@ -68,10 +59,15 @@ const navigation = useNavigation();
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
+                    value={code}
+                    onChangeText={text => setCode(text)}
                 />
               
       
             </View>
+            {codeError && (
+        <Text style={styles.errorMsg}>Code must contain just 4 characters</Text>
+      )}
 
              <CustomButton  
              text="Confirm" 
@@ -82,12 +78,6 @@ const navigation = useNavigation();
              text="Resend code " 
              onPress={onResendPressed} 
              type="SECONDARY" 
-             /> 
-
-             <CustomButton  
-             text="Back to Sign in" 
-             onPress={onSignInPressed} 
-             type="TERTIARY" 
              /> 
 
         </Animatable.View>

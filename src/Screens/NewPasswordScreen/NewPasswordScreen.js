@@ -10,18 +10,44 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const NewPasswordScreen = () => { 
 const [code, setCode] = useState('');
+const [codeError, setCodeError] = useState(false);
 const [newPassword, setNewPassword] = useState('');
+const [newPasswordError, setNewPasswordError] = useState(false);
+const [passwordRepeat, setPasswordRepeat] = useState('');
+const [passwordRepeatError, setPasswordRepeatError] = useState(false);
 
 const navigation = useNavigation();
     
+const validateNewPassword = newPassword => {
+    return newPassword.length >= 6;
+    };
+const validateCode = code => {
+    return code.length == 4;
+    };
+const validatePasswordRepeat = passwordRepeat => {
+        return  passwordRepeat === newPassword;
+        };
 
     const onSubmitPressed = () => {
-        navigation.navigate('Home');
-    };
-    
-    const onSignInPressed = () => {
+        const errors = {};
+        if (!validateCode(code)) {
+            errors.code = ' Code must contain just 4 characters';
+          }
+        if (!validateNewPassword(newPassword)) {
+            errors.newPassword = ' Password must contain at least 6 characters';
+          }
+          if (!validatePasswordRepeat(passwordRepeat)) {
+            errors.passwordRepeat = 'Passwords do not match';
+          }
+          if (Object.keys(errors).length > 0) {
+            setCodeError(errors.code || false);
+            setNewPasswordError(errors.newPassword || false);
+            setPasswordRepeatError(errors.passwordRepeat || false);
+            return;
+          }
         navigation.navigate('Sign in');
     };
+    
 
 
     return (
@@ -47,10 +73,16 @@ const navigation = useNavigation();
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
+                    value={code}
+                    onChangeText={text => setCode(text)}
                 />
               
       
             </View>
+            {codeError && (
+        <Text style={styles.errorMsg}>Code must contain just 4 characters</Text>
+      )}
+
              <Text style={styles.text_footer}>New password</Text>
         <View style={styles.action}>
             <Feather 
@@ -63,22 +95,41 @@ const navigation = useNavigation();
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
+                    value={newPassword}
+                    onChangeText={text => setNewPassword(text)}
                     
                 />
               
         </View>
-             
+        {newPasswordError && (
+        <Text style={styles.errorMsg}>Password must contain at least 6 characters</Text>
+      )}     
+
+<Text style={styles.text_footer}>Confirm new password</Text>
+        <View style={styles.action}>
+            <Feather 
+                    name="lock"
+                    color="#05375a" 
+                    size={20}
+                />
+              <TextInput 
+                    placeholder="Confirm your new password"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    secureTextEntry={true}
+                    value={passwordRepeat}
+                    onChangeText={text => setPasswordRepeat(text)}
+                    
+                />
+              
+        </View>
+        {passwordRepeatError && (
+        <Text style={styles.errorMsg}> Passwords do not match </Text>
+        )}
 
              <CustomButton  
              text="Submit" 
              onPress={onSubmitPressed}  
-             /> 
-              
-
-             <CustomButton  
-             text="Back to Sign in" 
-             onPress={onSignInPressed} 
-             type="TERTIARY" 
              /> 
 
         </Animatable.View>
