@@ -43,4 +43,15 @@ class Controller extends BaseController
             ->withData($data)
             ->build();
     }
+
+      /**
+     * @param string $message
+     * @param int $errorCode
+     * @return Response
+     */
+    public function errorMsg(string $message,int $errorCode = 402) : Response{
+        return ResponseBuilder::asError($errorCode)
+            ->withMessage($message)
+            ->build();
+    }
 }

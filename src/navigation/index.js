@@ -14,13 +14,16 @@ import ForgotPasswordScreen from '../Screens/ForgotPasswordScreen/ForgotPassword
 import NewPasswordScreen from '../Screens/NewPasswordScreen/NewPasswordScreen';
 import HomeScreen from '../Screens/HomeScreen';
 import AdminLoginScreen from '../Screens/AdminLoginScreen/AdminLoginScreen';
-import AdminHomeScreen from '../Screens/AdminHomeScreen/AdminHomeScreen';
+//import AdminHomeScreen from '../Screens/AdminHomeScreen/AdminHomeScreen';
 import GetstartedScreen from '../Screens/GetstartedScreen/GetstartedScreen';
 import SettingScreen from '../Screens/SettingScreen/SettingScreen';
-import ChatScreen from '../Screens/ChatScreen/ChatScreen';
-import SettingAdminScreen from '../Screens/SettingAdminScreen/SettingAdminScreen';
+//import ChatScreen from '../Screens/ChatScreen/ChatScreen';
+//import SettingAdminScreen from '../Screens/SettingAdminScreen/SettingAdminScreen';
 
 
+
+
+//const store = createStore(rootReducer);
 const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
@@ -44,7 +47,7 @@ function HScreen() {
   function TabB() {
     return (
         <Tab.Navigator initialRouteName="Chat" screenOptions={{headerShown: false }}>
-          <Tab.Screen  name="Contact"  component={HScreen}
+          <Tab.Screen  name="Contact"  component={ChScreen}
          options={{
           tabBarLabel: 'Contact',
           tabBarIcon: ({ color, size }) => (
@@ -70,7 +73,7 @@ function HScreen() {
     );
   }
 
-  function SetAdminScreen() {
+  /*function SetAdminScreen() {
     return (
         
       <SettingAdminScreen/>
@@ -105,7 +108,9 @@ function HScreen() {
         </Tab.Navigator>
 
     );
-  }
+  }*/
+
+  
 
 const Naviagtion = () => {
 
@@ -120,7 +125,6 @@ const Naviagtion = () => {
              <Stack.Screen name="Forgot password" component={ForgotPasswordScreen} />
              <Stack.Screen name="New password" component={NewPasswordScreen} />
              <Stack.Screen name="Home" component={TabB} />
-             <Stack.Screen name="Admin Home" component={TabA} />
 
     </Stack.Navigator>
         </NavigationContainer>

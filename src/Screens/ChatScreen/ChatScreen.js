@@ -1,33 +1,35 @@
-import React from 'react'
-import { SafeAreaView,Text, TextInput, StyleSheet } from 'react-native'
-import {useNavigation} from '@react-navigation/native';
-
+import React, {  useState } from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 
 const ChatScreen = () => {
+  const [chats, setChats] = useState([]);
 
-    const navigation = useNavigation();
+  
 
 
-    return (
-        <SafeAreaView style={{ flex: 1, marginHorizontal: 20}}>
-                <Text style={styles.tir}>Chat</Text>
-              
-             <TextInput
-                  placeholder="Search"
-                  clearButtonMode="always"
-                  style={{paddingHorizontal: 20, paddingVertical: 10, borderColor: "#ccc", borderWidth: 1, borderRadius: 8,}}
-              /> 
-    </SafeAreaView>
-    );
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Chats</Text>
+      <TextInput
+        placeholder="Search"
+        clearButtonMode="always"
+        style={{ paddingHorizontal: 20, paddingVertical: 10, borderColor: '#ccc', borderWidth: 1, borderRadius: 8 }}
+      />
+    </View>
+  );
 };
+
 const styles = StyleSheet.create({
-    tir: {
-        fontSize: 32,
-        fontWeight: '700',
-        color: '#1d1d1d',
-         marginVertical: 20,
-    },
-   
-  });
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  
+});
 
 export default ChatScreen;

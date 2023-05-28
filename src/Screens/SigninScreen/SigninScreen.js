@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+
 
 const SigninScreen = () => {
 const [email, setEmail] = useState('');
@@ -30,7 +32,10 @@ const validatePassword = password => {
 return password.length >= 6;
 };
 
+
+
 const onSignInPressed = () => {
+
     const errors = {};
   
     if (!validateEmail(email)) {
@@ -45,8 +50,28 @@ const onSignInPressed = () => {
         setPasswordError(errors.password || false);
         return;
       }
-navigation.navigate('Home');
-};
+      handleSignin();
+    };
+  
+    const handleSignin = async () => {
+      try {
+        const response = await axios.post('http://192.168.8.120:8000/api/v1/auth/login', {
+          email,
+          password
+        });
+  
+        // Handle the response from the backend
+        console.log(response.data);
+
+        // Redirect or perform any other action based on the response
+        navigation.navigate('Home');
+      } catch (error) {
+        // Handle error
+        console.error(error);
+      }
+    };
+
+
 
 const onForfotPasswordPressed = () => {
 navigation.navigate('Forgot password');

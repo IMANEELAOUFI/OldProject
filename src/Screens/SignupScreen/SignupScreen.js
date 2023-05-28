@@ -6,18 +6,24 @@ import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+
+
 
 const SignupScreen = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone_number, setPhone_number] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordRepeat, setPasswordRepeat] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password_confirmation, setPassword_confirmation] = useState('');
   const [emailError, setEmailError] = useState(false);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [usernameError, setUsernameError] = useState(false);
-  const [phoneNumberError, setPhoneNumberError] = useState(false);
   const [passwordRepeatError, setPasswordRepeatError] = useState(false);
+
+
+
 
   const navigation = useNavigation();
 
@@ -30,18 +36,18 @@ const SignupScreen = () => {
     return password.length >= 6;
     };
 
-    const validatePasswordRepeat = passwordRepeat => {
-        return  passwordRepeat === password;
+    const validatePasswordRepeat = password_confirmation => {
+        return  password_confirmation === password;
         };
 
-  const validatePhoneNumber = (phoneNumber) => {
+  const validatePhoneNumber = (phone_number) => {
     const phoneNumberRegex = /^\d{10,14}$/;
-    return phoneNumberRegex.test(phoneNumber);
+    return phoneNumberRegex.test(phone_number);
   };
-  
+
 
   const onRegisterPressed = () => {
-
+    
     const errors = {};
   
   if (!validateEmail(email)) {
@@ -52,23 +58,44 @@ const SignupScreen = () => {
     errors.password = ' Password must contain at least 6 characters';
   }
   
-  if (!validatePhoneNumber(phoneNumber)) {
-    errors.phoneNumber = 'Invalid phone number';
+  if (!validatePhoneNumber(phone_number)) {
+    errors.phone_number = 'Invalid phone number';
   }
   
-  if (!validatePasswordRepeat(passwordRepeat)) {
-    errors.passwordRepeat = 'Passwords do not match';
+  if (!validatePasswordRepeat(password_confirmation)) {
+    errors.password_confirmation = 'Passwords do not match';
   }
   
   if (Object.keys(errors).length > 0) {
     setEmailError(errors.email || false);
     setPasswordError(errors.password || false);
-    setPhoneNumberError(errors.phoneNumber || false);
-    setPasswordRepeatError(errors.passwordRepeat || false);
+    setPhoneNumberError(errors.phone_number || false);
+    setPasswordRepeatError(errors.password_confirmation || false);
     return;
+    
   }
   
-    navigation.navigate('confirm email');
+  handleSignup(); 
+  };
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post('http://192.168.8.120:8000/api/v1/auth/register', {
+        username,
+        email,
+        phone_number,
+        password,
+        password_confirmation
+      });
+
+      // Handle the response from the backend
+      console.log(response.data);
+
+      // Redirect or perform any other action based on the response
+      navigation.navigate('confirm email');
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
   };
 
   const onSignInPressed = () => {
@@ -127,8 +154,8 @@ const SignupScreen = () => {
               placeholder="Your phone number"
               style={styles.textInput}
               autoCapitalize="none"
-              value={phoneNumber}
-              onChangeText={text => setPhoneNumber(text)}
+              value={phone_number}
+              onChangeText={text => setPhone_number(text)}
             />
           </View>
           {phoneNumberError && (
@@ -168,8 +195,8 @@ const SignupScreen = () => {
                     style={styles.textInput}
                     autoCapitalize="none"
                     secureTextEntry={true}
-                    value={passwordRepeat}
-                    onChangeText={text => setPasswordRepeat(text)}
+                    value={password_confirmation}
+                    onChangeText={text => setPassword_confirmation(text)}
                     
                 />
               
@@ -181,6 +208,7 @@ const SignupScreen = () => {
              <CustomButton 
               text="Register " 
               onPress={onRegisterPressed}
+              
               /> 
               
              <Text style={styles.text}>
