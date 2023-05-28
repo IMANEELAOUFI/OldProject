@@ -7,12 +7,17 @@ use App\Models\User\User;
 
 class EmailVerificationObserver
 {
-    /** 
-     * @param SmsVerification $sms
+    /**
+     * Handle the SmsVerification "created" event.
+     *
+     * @param  \App\Models\User\SmsVerification  $sms
+     * @return void
      */
     public function created(SmsVerification $sms)
     {
-        $user = User::Where('email', $sms->email)->first();
-        $user->sendEmailVerifyCode($sms->code);
+        $user = User::where('email', $sms->email)->first();
+        if ($user) {
+            $user->sendEmailVerifyCode($sms->code);
+        }
     }
 }

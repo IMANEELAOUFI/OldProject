@@ -10,17 +10,17 @@ use Illuminate\Notifications\Notification;
 class EmailVerifyNotification extends Notification
 {
     use Queueable;
+
     /**
      * The verification code.
-     * 
+     *
      * @var string
      */
-
-     public $code;
+    public $code;
 
     /**
      * Create a new notification instance.
-     * 
+     *
      * @param  string  $code
      * @return void
      */
@@ -35,24 +35,23 @@ class EmailVerifyNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via(object $notifiable)
+    public function via($notifiable)
     {
         return ['mail'];
     }
 
     /**
      * Get the mail representation of the notification.
-     * 
+     *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(object $notifiable)
+    public function toMail($notifiable)
     {
         return (new MailMessage)
-        ->subject('Your verification code')
-        ->line('Your verification code is: '.$this->code)
-        ->line('Please use this code to complete your registration.')
-        ->line('If you did not request this code, please disregard this email.');
-
+            ->subject('Your verification code')
+            ->line('Your verification code is: ' . $this->code)
+            ->line('Please use this code to complete your registration.')
+            ->line('If you did not request this code, please disregard this email.');
     }
 }
