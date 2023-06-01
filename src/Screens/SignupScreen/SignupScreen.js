@@ -138,6 +138,7 @@ const SignupScreen = () => {
               placeholder="Your email"
               style={styles.textInput}
               autoCapitalize="none"
+              keyboardType="email-address"
               value={email}
               onChangeText={text => setEmail(text)}
             />
@@ -154,6 +155,7 @@ const SignupScreen = () => {
               placeholder="Your phone number"
               style={styles.textInput}
               autoCapitalize="none"
+              keyboardType="number-pad"
               value={phone_number}
               onChangeText={text => setPhone_number(text)}
             />
