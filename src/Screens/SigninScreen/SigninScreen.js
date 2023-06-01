@@ -95,6 +95,7 @@ return (
           placeholder="Your email"
           style={styles.textInput}
           autoCapitalize="none"
+          keyboardType="email-address"
           value={email}
           onChangeText={text => setEmail(text)}
         />

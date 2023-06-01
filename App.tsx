@@ -4,7 +4,7 @@
  *
  * @format
  */
-import React, {useEffect} from 'react';
+import React, {Profiler, useEffect} from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import Naviagtion from './src/navigation';
 import OneSignal from 'react-native-onesignal';
@@ -25,7 +25,7 @@ function App(): JSX.Element {
    
    
   },[])
-  return (
+ return (
     <SafeAreaView style={styles.root}>
       <Naviagtion />
     </SafeAreaView>

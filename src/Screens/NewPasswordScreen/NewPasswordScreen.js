@@ -72,7 +72,7 @@ const validatePasswordRepeat = passwordRepeat => {
                     placeholder="Enter your confirmation code"
                     style={styles.textInput}
                     autoCapitalize="none"
-                    secureTextEntry={true}
+                    keyboardType="number-pad"
                     value={code}
                     onChangeText={text => setCode(text)}
                 />

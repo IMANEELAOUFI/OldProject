@@ -17,10 +17,14 @@ class UserController extends Controller
     {
         //$users = User::all();
         //return response()->json($users);
+       // $users = User::where('id', '!=', auth()->user()->id)->get();
+       // return $this->successWithMsg($users);
+       
         $users = User::where('id', '!=', auth()->user()->id)->get();
-        return $this->successWithMsg($users);
-        
+        return response()->json($users); 
         
 
     }
+
+    
 }
