@@ -1,33 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-
 import { View, Text, TextInput, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import ProfilePic from '../../../assets/images/ProfilePic.png';
 
 const API_BASE_URL = 'http://10.0.2.2:8000/api';
 
 
-const ChatScreen = () => {
+const ContactScreen = () => {
   const [chats, setChats] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
-  const name = route.params
+  useEffect(() => {
+    fetchChats();
+  }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchChats();
-      console.log(name.name);
-  
-    }, [])
-  );
   const fetchChats = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.get(`${API_BASE_URL}/chat`, {
+      const response = await axios.get(`${API_BASE_URL}/user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -37,35 +27,48 @@ const ChatScreen = () => {
         setChats(response.data.data.items);
         // console.log(chats)
       } else {
-        console.error('Error while loading chats:', response.data.message);
+        console.error('Error while loading Contacts:', response.data.message);
       }
     } catch (error) {
-      console.error('Error while loading chats:', error.message);
+      console.error('Error while loading Contacts:', error.message);
     }
   };
-  const go =  (itemId , contact ) => {
-
+  const go = async (userId ) => {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.post(`${API_BASE_URL}/chat`, {
+            user_id: userId
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (response.data.success) {
+            navigation.navigate('Chat' , { userId });
+            console.log('chats')
+        } else {
+          console.error('Error while loading Contacts:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error while loading Contacts:', error.message);
+      }
       // Redirect or perform any other action based on the response
-      navigation.navigate('Message' , { itemId , contact , name : name.name});
+      
     } ;
-    const RenderChatItem = ({ item }) => (
-      <TouchableOpacity onPress={() => go(item.id, item.participants[1].user.username)} style={styles.chatItem}>
-         {/* <ProfilePic source={{ uri: item.avatar }} style={styles.profileAvatar} />   */}
-        <View style={styles.chatDetails}>
-          <Text style={styles.chatName}>chat with {item.participants[1].user.username}</Text>
-          {item.last_message && item.last_message.message && (
-            <Text style={styles.chatMessage}>{item.last_message.message}</Text>
-          )}
-          {!item.last_message && (
-            <Text style={styles.chatMessage}>No messages</Text>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
+  const RenderChatItem = ({ item }) => (
+    <TouchableOpacity onPress={() => go(item.id)}style={styles.chatItem} >
+       {/* <Image source={{ uri: item.avatar }} style={styles.profileAvatar} />  */}
+      <View style={styles.chatDetails}>
+        <Text style={styles.chatName}>{item.username}</Text>
+        <Text style={styles.chatMessage}>{item.email}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Chats</Text>
+      <Text style={styles.title}>Contact</Text>
       <TextInput
         placeholder="Search"
         clearButtonMode="always"
@@ -128,4 +131,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default ContactScreen;

@@ -8,6 +8,7 @@ ScrollView,
 Platform,
 } from 'react-native';
 import CustomButton from '../../Compenents/CustomButton/CustomButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import Feather from 'react-native-vector-icons/Feather';
@@ -55,16 +56,21 @@ const onSignInPressed = () => {
   
     const handleSignin = async () => {
       try {
-        const response = await axios.post('http://192.168.8.120:8000/api/v1/auth/login', {
+        const response = await axios.post('http://10.0.2.2:8000/api/login', {
           email,
           password
         });
   
         // Handle the response from the backend
-        console.log(response.data);
-
+        console.log(response.data.data.accessToken);
+        await AsyncStorage.setItem('token', response.data.data.accessToken);
         // Redirect or perform any other action based on the response
-        navigation.navigate('Home');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.accessToken}`;
+        const role = response.data.data.user.role;
+        role == 'user' ?
+        navigation.navigate('Home', { name: response.data.data.user.username }):
+        navigation.navigate('Admin', { name: response.data.data.user.username })
+        ;
       } catch (error) {
         // Handle error
         console.error(error);
